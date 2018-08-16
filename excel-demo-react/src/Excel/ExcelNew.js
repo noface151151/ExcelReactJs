@@ -63,15 +63,15 @@ const ColumnProps = () => {
 const RowProps = () => {
   ws["!rows"] = wsrows;
 };
-const Customformat = ()=>{
-    var custfmt = "\"This is \"\\ 0.0";
-    XLSX.utils.cell_set_number_format(ws['C2'], custfmt);
-}
-const MergeCell = ()=>{
-    ws['!merges'] = [ XLSX.utils.decode_range("A6:C6") ];
-    console.log("JSON Data:");
-    console.log(XLSX.utils.sheet_to_json(ws, {header:1}));
-}
+const Customformat = () => {
+  var custfmt = '"This is "\\ 0.0';
+  XLSX.utils.cell_set_number_format(ws["C2"], custfmt);
+};
+const MergeCell = () => {
+  ws["!merges"] = [XLSX.utils.decode_range("A6:C6")];
+  console.log("JSON Data:");
+  console.log(XLSX.utils.sheet_to_json(ws, { header: 1 }));
+};
 const ExportExcel = () => {
   AddWorkSheetToWorkbook();
   //SimpleFormula();
@@ -80,7 +80,7 @@ const ExportExcel = () => {
   //ColumnProps();
   //RowProps();
   //Customformat();
-  //MergeCell();
+  MergeCell();
   const fileExtension = "xlsx";
   const fileName = "test";
   const wbout = XLSX.write(wb, {

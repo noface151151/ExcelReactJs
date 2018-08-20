@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import "./App.css";
+import TestPrint from './PrintReport/PrintRePort';
 import * as ExcelLib from "./Excel/ExcelLib";
 
 class App extends Component {
@@ -142,6 +143,8 @@ class App extends Component {
       <div className="App">
         <button onClick={this.ExportExcel}>Click</button>
         <input type="file" onChange={e => this.handleChange(e)} />
+        <hr />
+        <TestPrint></TestPrint>
       </div>
     );
   }

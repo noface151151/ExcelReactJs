@@ -14,10 +14,13 @@ class Content extends Component {
         <h1>{this.props.sum}</h1>
         <table>
           <thead>
-            <th>column 1</th>
-            <th>column 2</th>
-            <th>column 3</th>
+            <tr>
+              <th>column 1</th>
+              <th>column 2</th>
+              <th>column 3</th>
+            </tr>
           </thead>
+
           <tbody>
             <tr>
               <td>data 1</td>

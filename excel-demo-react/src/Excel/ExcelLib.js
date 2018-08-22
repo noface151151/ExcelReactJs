@@ -1,5 +1,6 @@
 import XLSX from "xlsx";
 import { saveAs } from "file-saver";
+import WriteLog from '../service/Logservice';
 
 /**
  * Khởi tạo một workbook mới
@@ -34,8 +35,8 @@ const SetRangeWorksheet = (worksheet, range) => {
 };
 
 /**
- * 
- * @param {string} rangeString 
+ *
+ * @param {string} rangeString ví dụ "A6:C6"
  */
 const GetRange = rangeString => {
   return XLSX.utils.decode_range(rangeString);
@@ -57,7 +58,7 @@ const MergeCell = (worksheet, rangeString) => {
  * @param {object} range 
  * @param {number} rowCount 
  */
-const InsertColumnName = (columnNames, worksheet, range, rowCount,style) => {
+const InsertColumnName = (columnNames, worksheet, range, rowCount, style) => {
   if (columnNames !== null && columnNames.length > 0) {
     columnNames.forEach((col, index) => {
       fixRange(range, rowCount - 1, index);
@@ -94,10 +95,10 @@ const SetCellValue = (value, column, row, range, worksheet, style) => {
   } else if (typeof value === "boolean") {
     cell.v = value;
     cell.t = "b";
-  // } else if (value instanceof Date) {
-  //   cell.t = "n";
-  //   cell.z = XLSX.SSF._table[14];
-  //   cell.v = dateToNumber(cell.v);
+    // } else if (value instanceof Date) {
+    //   cell.t = "n";
+    //   cell.z = XLSX.SSF._table[14];
+    //   cell.v = dateToNumber(cell.v);
   } else {
     cell.v = value;
     cell.t = "s";
@@ -114,8 +115,8 @@ const SetCellValue = (value, column, row, range, worksheet, style) => {
  * @param {string} fimeName 
  * @param {any} workbook 
  */
-const ExportExcel = (fimeName, workbook,worksheet,range,SheetName) => {
-  if (workbook === null||worksheet===null) {
+const ExportExcel = (fimeName, workbook, worksheet, range, SheetName) => {
+  if (workbook === null || worksheet === null) {
     return;
   }
   SetRangeWorksheet(worksheet, range);
@@ -137,11 +138,30 @@ const ExportExcel = (fimeName, workbook,worksheet,range,SheetName) => {
  * Chuyển file Excel sang Json
  * @param {binary} Filebinary 
  */
-const ConvertExcelToJson=(Filebinary)=>{
-  var workbook =XLSX.read(Filebinary,{type:"binary"})
+const ConvertExcelToJson = (Filebinary,sheetName) => {
+  var workbook = XLSX.read(Filebinary, { type: "binary" });
   var sheet_name_list = workbook.SheetNames;
-  console.log(XLSX.utils.sheet_to_json(workbook.Sheets[sheet_name_list[0]], {raw: true}))
-}
+  const index = sheet_name_list.indexOf(sheetName)
+  WriteLog( XLSX.utils.sheet_to_json(workbook.Sheets[sheet_name_list[index]], {
+    raw: true
+  }));
+};
+
+/**
+ * Chuyển đổi index sang column, ví dụ index:0 => column: A
+ * @param {number} columnIndex 
+ */
+const IndexToColumn = columnIndex => {
+  return XLSX.utils.encode_col(columnIndex);
+};
+
+/**
+ * Chuyển đổi column sang index, ví dụ column A => index: 0
+ * @param {string} columnName 
+ */
+const ColumnToIndex = columnName => {
+  return XLSX.utils.decode_col(columnName);
+};
 //các hàm hỗ trợ
 const getFileNameWithExtension = (filename, extension) => {
   return `${filename}.${extension}`;
@@ -177,10 +197,10 @@ const fixRange = (range, rowCount, column) => {
   //   range.e.c = range.e.c + column;
   // }
 
-  if(range.s.r > rowCount) range.s.r = rowCount;
-  if(range.s.c > column) range.s.c = column;
-  if(range.e.r < rowCount) range.e.r = rowCount;
-  if(range.e.c < column) range.e.c = column;
+  if (range.s.r > rowCount) range.s.r = rowCount;
+  if (range.s.c > column) range.s.c = column;
+  if (range.e.r < rowCount) range.e.r = rowCount;
+  if (range.e.c < column) range.e.c = column;
 };
 
 export {

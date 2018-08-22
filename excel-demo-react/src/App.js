@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import "./App.css";
-import TestPrint from './PrintReport/PrintRePort';
+import TestPrint from "./PrintReport/PrintRePort";
 import * as ExcelLib from "./Excel/ExcelLib";
 
 class App extends Component {
@@ -132,7 +132,7 @@ class App extends Component {
       for (var i = 0; i < length; i++) {
         binary += String.fromCharCode(bytes[i]);
       }
-      ExcelLib.ConvertExcelToJson(binary);
+      ExcelLib.ConvertExcelToJson(binary,'test');
       //  var oFile = XLSX.read(binary, {type: 'binary', cellDates:true, cellStyles:true});
     };
     fileReader.readAsArrayBuffer(file);
@@ -144,7 +144,7 @@ class App extends Component {
         <button onClick={this.ExportExcel}>Click</button>
         <input type="file" onChange={e => this.handleChange(e)} />
         <hr />
-        <TestPrint></TestPrint>
+        <TestPrint />
       </div>
     );
   }
